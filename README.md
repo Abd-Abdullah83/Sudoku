@@ -112,8 +112,8 @@ This project is licensed under the [MIT License](LICENSE). You are free to use, 
 ## 👤 Author
 
 **Your Name**
-- GitHub: [@your-username](https://github.com/Abd-Abdullah83)
-- LinkedIn: [your-linkedin](https://linkedin.com/in/abdullah-tahir-ds)
+- GitHub: [@Abdullah](https://github.com/Abd-Abdullah83)
+- LinkedIn: [Abdullah](https://linkedin.com/in/abdullah-tahir-ds)
 
 ---
 
