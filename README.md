@@ -80,7 +80,6 @@ Once launched, the SFML window presents the main menu with the following options
 
 **Hint** — Press `H` at any point during gameplay to reveal one correct cell.
 
-**Reset** — Clears all user-entered values and restores the original puzzle state.
 
 
 ---
