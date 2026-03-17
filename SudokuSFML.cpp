@@ -1,15 +1,3 @@
-﻿/*
- ██████  ██    ██ ██████   ██████  ██   ██ ██    ██
-██       ██    ██ ██   ██ ██    ██ ██  ██  ██    ██
- █████   ██    ██ ██   ██ ██    ██ █████   ██    ██
-      ██ ██    ██ ██   ██ ██    ██ ██  ██  ██    ██
- ██████   ██████  ██████   ██████  ██   ██  ██████
-
-  SFML Sudoku — Compile with:
-  g++ sudoku_sfml.cpp -o sudoku -lsfml-graphics -lsfml-window -lsfml-system
-  or with MSVC + vcpkg sfml
-*/
-
 #include <SFML/Graphics.hpp>
 #include <ctime>
 #include <cstdlib>
@@ -17,7 +5,7 @@
 #include <sstream>
 #include <algorithm>
 
-// ─── Palette ────────────────────────────────────────────────────────────────
+
 const sf::Color BG{ 15,  17,  26, 255 };   // deep navy
 const sf::Color GRID_LINE{ 50,  55,  80, 255 };   // muted blue-grey
 const sf::Color BOX_LINE{ 100, 120, 200, 255 };  // accent blue
@@ -35,15 +23,15 @@ const sf::Color ACCENT{ 90, 130, 255, 255 };   // highlight accent
 const sf::Color BTN_BG{ 30,  38,  70, 255 };   // button bg
 const sf::Color BTN_HOV{ 50,  65, 120, 255 };   // button hover
 
-// ─── Layout constants ───────────────────────────────────────────────────────
+
 const int WINDOW_W = 700;
 const int WINDOW_H = 780;
 const int BOARD_X = 40;
 const int BOARD_Y = 80;
 const int BOARD_SIZE = 540;
-const int CELL_SIZE = BOARD_SIZE / 9;   // 60
+const int CELL_SIZE = BOARD_SIZE / 9;   
 
-// ─── Sudoku Logic ───────────────────────────────────────────────────────────
+
 void alot(int**& a) {
     a = new int* [9];
     for (int i = 0; i < 9; i++) a[i] = new int[9];
@@ -104,7 +92,6 @@ void generate(int** solution, int** puzzle, int**& empty, int removals = 45) {
     }
 }
 
-// ─── State ──────────────────────────────────────────────────────────────────
 enum class GameState { PLAYING, WON, MENU };
 
 struct Game {
@@ -154,8 +141,6 @@ struct Game {
         bool wasWrong = wrong[selR][selC];
         puzzle[selR][selC] = val;
         wrong[selR][selC] = (solution[selR][selC] != val);
-        // Only count a new mistake when transitioning from correct/empty -> wrong.
-        // Overwriting one wrong answer with another wrong answer does NOT add another mistake.
         if (wrong[selR][selC] && !wasWrong) mistakes++;
     }
     ~Game() {
@@ -165,7 +150,6 @@ struct Game {
     }
 };
 
-// ─── Helpers ────────────────────────────────────────────────────────────────
 sf::Vector2i cellAt(int mx, int my) {
     int c = (mx - BOARD_X) / CELL_SIZE;
     int r = (my - BOARD_Y) / CELL_SIZE;
@@ -199,7 +183,6 @@ void drawRoundedRect(sf::RenderWindow& win, float x, float y, float w, float h,
     }
 }
 
-// ─── Main ───────────────────────────────────────────────────────────────────
 int main() {
     srand((unsigned)time(nullptr));
 
@@ -207,13 +190,9 @@ int main() {
         sf::Style::Titlebar | sf::Style::Close);
     window.setFramerateLimit(60);
 
-    // Load font — try system paths; fallback to default if unavailable
     sf::Font font;
     bool fontLoaded = false;
     const char* fontPaths[] = {
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
-        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
-        "/usr/share/fonts/truetype/freefont/FreeSansBold.ttf",
         "C:/Windows/Fonts/arial.ttf",
         "/System/Library/Fonts/Helvetica.ttc",
         nullptr
@@ -221,11 +200,9 @@ int main() {
     for (int i = 0; fontPaths[i]; i++) {
         if (font.loadFromFile(fontPaths[i])) { fontLoaded = true; break; }
     }
-    // If no font found, SFML will use the fallback bitmap font — still functional.
 
     Game game;
 
-    // ── Button helpers ──────────────────────────────────────────────────────
     auto makeText = [&](const std::string& s, unsigned size, sf::Color col,
         float x, float y) -> sf::Text {
             sf::Text t;
@@ -251,7 +228,6 @@ int main() {
         bool hovered = false;
     };
 
-    // ── Main loop ───────────────────────────────────────────────────────────
     sf::Clock clock;
     float winFlash = 0.f;
 
@@ -261,7 +237,6 @@ int main() {
         float dt = clock.restart().asSeconds();
         if (winFlash > 0.f) winFlash -= dt;
 
-        // ── MENU ────────────────────────────────────────────────────────────
         if (game.state == GameState::MENU) {
             while (window.pollEvent(ev)) {
                 if (ev.type == sf::Event::Closed) window.close();
@@ -269,7 +244,7 @@ int main() {
                     window.close();
                 if (ev.type == sf::Event::MouseButtonPressed) {
                     int mx = ev.mouseButton.x, my = ev.mouseButton.y;
-                    // Easy / Medium / Hard buttons at y=370, 440, 510
+                   
                     if (mx > 200 && mx < 500) {
                         if (my > 360 && my < 420) { game.difficulty = 0; game.newGame(); }
                         if (my > 430 && my < 490) { game.difficulty = 1; game.newGame(); }
@@ -278,7 +253,7 @@ int main() {
                 }
             }
             window.clear(BG);
-            // Title
+         
             sf::Text title = centeredText("SUDOKU", 72, ACCENT, WINDOW_W / 2.f, 140.f);
             window.draw(title);
             sf::Text sub = centeredText("Select difficulty to begin", 20, { 120,130,170,255 }, WINDOW_W / 2.f, 220.f);
@@ -297,7 +272,6 @@ int main() {
             continue;
         }
 
-        // ── WON ─────────────────────────────────────────────────────────────
         if (game.state == GameState::WON) {
             while (window.pollEvent(ev)) {
                 if (ev.type == sf::Event::Closed) window.close();
@@ -311,9 +285,7 @@ int main() {
                     if (mx > 370 && mx < 550 && my > 500 && my < 560) game.state = GameState::MENU;
                 }
             }
-            // Draw completed board faintly
             window.clear(BG);
-            // Board
             for (int r = 0; r < 9; r++) {
                 for (int c = 0; c < 9; c++) {
                     float cx = (float)BOARD_X + c * (float)CELL_SIZE;
@@ -335,7 +307,6 @@ int main() {
             std::string ms = "Mistakes: " + std::to_string(game.mistakes);
             sf::Text win2 = centeredText(ms, 28, { 180,190,220,255 }, WINDOW_W / 2.f, 270.f);
             window.draw(win2);
-            // Buttons
             bool h1 = (mouse.x > 150 && mouse.x < 350 && mouse.y>500 && mouse.y < 560);
             bool h2 = (mouse.x > 370 && mouse.x < 550 && mouse.y>500 && mouse.y < 560);
             drawRoundedRect(window, 150.f, 500.f, 200.f, 60.f, 10.f, h1 ? BTN_HOV : BTN_BG, ACCENT, 2.f);
@@ -347,7 +318,6 @@ int main() {
             continue;
         }
 
-        // ── PLAYING ─────────────────────────────────────────────────────────
         while (window.pollEvent(ev)) {
             if (ev.type == sf::Event::Closed) window.close();
 
@@ -355,18 +325,16 @@ int main() {
                 if (ev.key.code == sf::Keyboard::Escape) {
                     game.state = GameState::MENU; continue;
                 }
-                // Arrow keys
                 if (ev.key.code == sf::Keyboard::Up && game.selR > 0) game.selR--;
                 if (ev.key.code == sf::Keyboard::Down && game.selR < 8) game.selR++;
                 if (ev.key.code == sf::Keyboard::Left && game.selC > 0) game.selC--;
                 if (ev.key.code == sf::Keyboard::Right && game.selC < 8) game.selC++;
-                // Delete / Backspace
+
                 if ((ev.key.code == sf::Keyboard::Delete || ev.key.code == sf::Keyboard::BackSpace)
                     && game.selR >= 0 && !game.fixed[game.selR][game.selC]) {
                     game.puzzle[game.selR][game.selC] = 0;
                     game.wrong[game.selR][game.selC] = false;
                 }
-                // Digit keys (both main and numpad)
                 int digit = -1;
                 if (ev.key.code >= sf::Keyboard::Num1 && ev.key.code <= sf::Keyboard::Num9)
                     digit = ev.key.code - sf::Keyboard::Num1 + 1;
@@ -376,12 +344,12 @@ int main() {
                     game.enterDigit(digit);
                     if (game.isSolved()) { game.state = GameState::WON; winFlash = 1.f; }
                 }
-                // H = hint
+                
                 if (ev.key.code == sf::Keyboard::H) {
                     game.useHint();
                     if (game.isSolved()) game.state = GameState::WON;
                 }
-                // N = new game
+                
                 if (ev.key.code == sf::Keyboard::N) game.newGame();
             }
 
@@ -390,7 +358,7 @@ int main() {
                 sf::Vector2i cell = cellAt(mx, my);
                 if (cell.x >= 0) { game.selR = cell.x; game.selC = cell.y; }
 
-                // Bottom buttons — New Game (left), Hint (right)
+               
                 if (my > 670 && my < 720) {
                     if (mx > 40 && mx < 200) game.newGame();
                     if (mx > 220 && mx < 380) { game.useHint(); if (game.isSolved()) game.state = GameState::WON; }
@@ -399,23 +367,19 @@ int main() {
             }
         }
 
-        // ── DRAW ─────────────────────────────────────────────────────────────
         window.clear(BG);
 
-        // Title bar
         {
             sf::Text title = makeText("SUDOKU", 32, ACCENT, 40.f, 20.f);
             window.draw(title);
 
-            // Mistakes / Hints info on right
             std::string info = "Mistakes: " + std::to_string(game.mistakes)
                 + "   Hints: " + std::to_string(game.hints);
             sf::Text inf = makeText(info, 18, { 150,160,200,255 }, 300.f, 28.f);
             window.draw(inf);
         }
 
-        // Digit input row (1-9 clickable at bottom)
-        // ── Number pad row ───────────────────────────────────────────────────
+       
         {
             float py = 630.f;
             for (int d = 1; d <= 9; d++) {
@@ -436,7 +400,7 @@ int main() {
             }
         }
 
-        // ── Bottom action buttons ────────────────────────────────────────────
+       
         {
             float by = 700.f;
             std::string hintLbl = "HINT (" + std::to_string(game.hints) + ")";
