@@ -1,120 +1,229 @@
-# 🔢 Sudoku
+<div align="center">
 
-A fully-featured Sudoku application built in **C++** with **SFML** — play interactively, generate puzzles, and solve any board instantly.
+# 🔢 SUDOKU
 
----
+### *Two complete C++ implementations — Console & Graphical SFML*
 
-## 📖 Overview
+<br>
 
-**Sudoku** is a C++17 Windows desktop application that combines an interactive puzzle game with a built-in backtracking solver, all rendered through the SFML graphics library. Players can generate new puzzles at varying difficulty levels, fill in answers through a responsive GUI, and invoke the solver at any point to complete the board automatically.
+![C++](https://img.shields.io/badge/C++-17-00599C?style=for-the-badge&logo=cplusplus&logoColor=white)
+![SFML](https://img.shields.io/badge/SFML-2.x-8CC445?style=for-the-badge&logo=sfml&logoColor=white)
+![Console](https://img.shields.io/badge/Console-Version-4A90D9?style=for-the-badge)
+![Difficulty](https://img.shields.io/badge/Difficulty-Easy_|_Medium_|_Hard-E67E22?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-lightgrey?style=for-the-badge)
 
-The project demonstrates constraint-satisfaction algorithms, clean object-oriented design in C++, and real-time 2D rendering using SFML.
+<br>
 
----
+> *Procedurally generated puzzles · Mistake tracking · Hint system · Backtracking solver*
 
-## ✨ Features
-
-- **Puzzle Generator** — Creates valid, uniquely-solvable puzzles across four difficulty levels: Easy, Medium, Hard, and Expert.
-- **Backtracking Solver** — Solves any legal Sudoku board in milliseconds using a recursive constraint-based algorithm.
-- **SFML GUI** — Smooth, responsive 2D interface with full keyboard and mouse input support.
-- **Real-time Validation** — Highlights conflicting cells in rows, columns, and 3×3 subgrids as you type.
-- **Hint System** — Reveals a single correct cell on demand without exposing the full solution.
-- **Auto-solve Visualiser** — Animates the backtracking algorithm step-by-step for educational purposes.
+<br>
 
 ---
 
-## 🛠️ Prerequisites
+</div>
 
-Before building the project, ensure the following are installed on your Windows machine:
+## 📸 Screenshots
 
-- [Visual Studio 2019 or later](https://visualstudio.microsoft.com/) with the **Desktop development with C++** workload, or MinGW-w64 (GCC 9+)
-- [CMake 3.16+](https://cmake.org/download/)
-- [SFML 2.6 for Windows](https://www.sfml-dev.org/download.php)
+<div align="center">
 
-### Installing SFML on Windows
+| Menu | Gameplay | Mistake Highlight |
+|:---:|:---:|:---:|
+| ![Menu](screenshots/menu.png) | ![Board](screenshots/board.png) | ![Mistake](screenshots/mistake.png) |
 
-1. Download the SFML 2.6 package matching your compiler (Visual C++ or MinGW) from the [official SFML download page](https://www.sfml-dev.org/download.php).
-2. Extract the archive to a known location, for example `C:\SFML`.
-3. Set the `SFML_DIR` variable in `CMakeLists.txt` to point to that location, or pass it during the CMake configure step:
+| Multiple Mistakes | Console Version |
+|:---:|:---:|
+| ![Mistakes](screenshots/mistakes_many.png) | ![Console](screenshots/console.png) |
 
-```bash
-cmake .. -DSFML_DIR="C:/SFML/lib/cmake/SFML"
+</div>
+
+---
+
+## 🎮 Two Versions
+
+<div align="center">
+
+| | Version | Description |
+|:---:|:---|:---|
+| 🖥️ | **SudokuSFML.cpp** | Full graphical window · mouse input · colour feedback |
+| ⌨️ | **SudokuConsole.cpp** | Terminal-based · ASCII grid · keyboard row/col/value input |
+
+</div>
+
+---
+
+## 🌟 Features
+
+### 🖼️ SFML Graphical Version
+- 🎯 **Difficulty select screen** — Easy, Medium, Hard with colour-coded buttons
+- 🎲 **Procedurally generated** unique puzzles every game
+- 🔴 **Real-time mistake highlighting** — wrong cells flash red instantly
+- 💡 **Hint system** — 3 hints per game to reveal a correct cell
+- 📊 **Live HUD** — Mistakes counter + Hints remaining displayed at top
+- 🔢 **Number pad** — clickable 1–9 bar at the bottom of the board
+- 🖱️ **Mouse-click cell selection** — click any cell to select it
+
+### ⌨️ Console Version
+- 📐 **ASCII 9×9 grid** with 3×3 box dividers
+- 🔢 **Row / col / value** input format (`row col value` or `0` to exit)
+- ✅ **Validation** — rejects invalid placements immediately
+- 🔀 **Shuffled puzzle generation** for variety each run
+- 🧠 **Backtracking solver** used internally for generation
+
+---
+
+## 🧩 How the Puzzle Engine Works
+
+```
+1. Fill diagonal 3×3 boxes with shuffled 1–9
+2. Solve the rest using recursive backtracking
+3. Remove cells based on difficulty level
+4. Validate every player input against the solution
+```
+
+### Core Functions
+
+```cpp
+void  alot(int**& a)               // Allocate 9×9 dynamic grid
+void  del(int**& a)                // Deallocate and nullify grid
+bool  valid(int** p, int r, int c, int x)  // Check placement validity
+void  shuffle(int* arr, int n)     // Fisher-Yates shuffle for randomness
+bool  solve(int** p)               // Recursive backtracking solver
+void  generate(int** p)            // Build a full valid board
+void  print(int** p)               // Render ASCII board (console)
 ```
 
 ---
 
-## 🚀 Building & Running
+## 🎯 Difficulty Levels
 
-Open **Developer Command Prompt for Visual Studio** (or a terminal with MinGW on your `PATH`) and run the following:
+<div align="center">
 
-```bash
-# 1. Clone the repository
-git clone https://github.com/Abd-Abdullah83/sudoku.git
-cd sudoku
+| 🟢 Easy | 🔵 Medium | 🔴 Hard |
+|:---:|:---:|:---:|
+| More clues revealed | Balanced reveal | Fewer clues — harder deduction |
+| Great for beginners | Moderate challenge | For experienced solvers |
 
-# 2. Create a build directory
-mkdir build
-cd build
+</div>
 
-# 3. Configure with CMake
-cmake .. -DSFML_DIR="C:/SFML/lib/cmake/SFML"
+---
 
-# 4. Build in Release mode
-cmake --build . --config Release
+## 🎨 SFML Visual Design
 
-# 5. Run the executable
-.\Release\sudoku.exe
+| Element | Detail |
+|:---|:---|
+| **Background** | Dark navy (`#0d1b2a`) for reduced eye strain |
+| **Grid lines** | Blue-tinted cell borders with bold 3×3 box outlines |
+| **Given numbers** | White — placed at puzzle generation |
+| **Player numbers** | Light blue — numbers entered by the player |
+| **Hint numbers** | Cyan — cells revealed by hint |
+| **Wrong cells** | 🔴 Red background — immediate mistake feedback |
+| **Number pad** | 1–9 buttons along the bottom edge |
+
+---
+
+## 📁 Project Structure
+
+```
+Sudoku/
+│
+├── 📄 SudokuSFML.cpp        ← Graphical version (SFML window + mouse)
+├── 📄 SudokuConsole.cpp     ← Console version (terminal + keyboard)
+│
+├── 📄 README.md
+└── 📄 LICENSE
 ```
 
-> **Note:** The SFML `.dll` files (`sfml-graphics-2.dll`, `sfml-window-2.dll`, `sfml-system-2.dll`) must be present in the same directory as `sudoku.exe`. Copy them from `C:\SFML\bin\` if they are not placed there automatically by the build.
-
 ---
 
-## 🎮 How to Play
+## 🚀 How to Build & Run
 
-Once launched, the SFML window presents the main menu with the following options.
+### 🖼️ SFML Version
 
-**New Game** — Choose a difficulty level and a freshly generated puzzle is displayed on the board.
-
-**Solve** — Automatically fills in the current board using the backtracking solver. You may also enter a custom puzzle and solve it instantly.
-
-**Hint** — Press `H` at any point during gameplay to reveal one correct cell.
-
-
-
----
-
-
-
----
-
-## 🧪 Running Tests
-
-Unit tests for the solver and generator can be built and run separately:
-
+**🐧 Linux / 🍎 macOS**
 ```bash
-cmake .. -DSFML_DIR="C:/SFML/lib/cmake/SFML" -DBUILD_TESTS=ON
-cmake --build . --config Release
-.\Release\sudoku_tests.exe
+# Clone
+git clone https://github.com/Abd-Abdullah83/Sudoku.git
+cd Sudoku
+
+# Compile
+g++ -std=c++17 SudokuSFML.cpp -o sudoku \
+    -lsfml-graphics -lsfml-window -lsfml-system
+
+# Run
+./sudoku
 ```
 
-All tests should pass before any pull request is submitted.
+**🪟 Windows (MinGW)**
+```bash
+g++ -std=c++17 SudokuSFML.cpp -o sudoku.exe ^
+    -lsfml-graphics -lsfml-window -lsfml-system
+
+sudoku.exe
+```
+
+### ⌨️ Console Version
+
+```bash
+# No dependencies — just compile and run
+g++ -std=c++17 SudokuConsole.cpp -o sudoku_console
+./sudoku_console
+```
+
+> [!NOTE]
+> The SFML version requires **SFML 2.x**.
+> - Ubuntu → `sudo apt install libsfml-dev`
+> - macOS → `brew install sfml`
+> - Windows → [sfml-dev.org](https://www.sfml-dev.org/download.php)
 
 ---
 
+## 🕹️ How to Play
 
-## 📄 License
+### 🖼️ SFML Version
+```
+1. Select difficulty — Easy / Medium / Hard
+2. Click a cell on the board to select it
+3. Click a number (1–9) from the bottom pad to place it
+4. Wrong placements highlight red and add to mistake count
+5. Use hints (💡 3 available) to reveal a correct cell
+```
 
-This project is licensed under the [MIT License](LICENSE). You are free to use, modify, and distribute it with attribution.
+### ⌨️ Console Version
+```
+1. The board is displayed as an ASCII grid
+2. Enter:  row(1-9)  col(1-9)  value(1-9)
+   Example: 1 3 7  →  places 7 at row 1, column 3
+3. Enter 0 to exit
+4. Invalid moves are rejected with an error message
+```
 
 ---
 
-## 👤 Author
+## 🧠 Algorithm — Backtracking Solver
 
-**Your Name**
-- GitHub: [@Abdullah](https://github.com/Abd-Abdullah83)
-- LinkedIn: [Abdullah](https://linkedin.com/in/abdullah-tahir-ds)
+The puzzle generator uses a **recursive backtracking** algorithm:
+
+```
+• Try placing digits 1–9 in each empty cell
+• Check row, column, and 3×3 box constraints via valid()
+• If no digit fits → backtrack to previous cell
+• Repeat until the board is fully solved
+• Remove cells to create the player's puzzle
+```
+
+This guarantees every generated puzzle has a **unique valid solution**.
 
 ---
 
-> *If you find this project useful, consider giving it a ⭐ on GitHub.*
+<div align="center">
+
+---
+
+### Built by **Abd-Abdullah83**
+*FAST National University of Computer & Emerging Sciences (NUCES)*
+
+<br>
+
+*Fill every row, column, and box — no repeats.*
+
+</div>
