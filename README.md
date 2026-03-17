@@ -28,11 +28,11 @@
 
 | Menu | Gameplay | Mistake Highlight |
 |:---:|:---:|:---:|
-| ![Menu](screenshots/menu.png) | ![Board](screenshots/board.png) | ![Mistake](screenshots/mistake.png) |
+| ![Menu](Screenshot%202026-03-18%20002323.png) | ![Board](Screenshot%202026-03-18%20002341.png) | ![Mistake](Screenshot%202026-03-18%20002401.png) |
 
 | Multiple Mistakes | Console Version |
 |:---:|:---:|
-| ![Mistakes](screenshots/mistakes_many.png) | ![Console](screenshots/console.png) |
+| ![Mistakes](Screenshot%202026-03-18%20002458.png) | ![Console](Screenshot%202026-03-18%20002640.png) |
 
 </div>
 
